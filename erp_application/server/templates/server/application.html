@@ -1,0 +1,377 @@
+{% extends 'server/pattern/pattern.html' %}
+{% load static %}
+
+{% block title %}{{ data.title }}{% endblock %}
+{% block content %}
+
+		<!--start page wrapper -->
+		<div class="page-wrapper">
+			<div class="page-content">
+				<!--breadcrumb-->
+				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<div class="breadcrumb-title pe-3">{{ farmer.farmer }}</div>
+					<div class="ps-3">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0 p-0">
+								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Wizard</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-12 mx-auto">
+						<h6 class="mb-0 text-uppercase">Form Wizard</h6>
+						<hr/>
+						<div class="card">
+							<div class="card-body">
+								<br />
+								<p>
+									<label>Theme:</label>
+									<select id="theme_selector">
+										<option value="default">Default</option>
+										<option value="arrows">Arrows</option>
+										<option value="dots" selected>Dots</option>
+										<option value="dark">Dark</option>
+									</select>&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="checkbox" id="is_justified" value="1" checked />
+									<label for="is_justified">Justified</label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label>Animation:</label>
+									<select id="animation">
+										<option value="none">None</option>
+										<option value="fade">Fade</option>
+										<option value="slide-horizontal" selected>Slide Horizontal</option>
+										<option value="slide-vertical">Slide Vertical</option>
+										<option value="slide-swing">Slide Swing</option>
+									</select>&nbsp;&nbsp;&nbsp;&nbsp;
+									<label>Go To:</label>
+									<select id="got_to_step">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+									</select>&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+								<br />
+								<div id="smartwizard">
+									<ul class="nav">
+										<li class="nav-item">
+											<a class="nav-link" href="#step-1">	<strong>Информация о фермере</strong></a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#step-2">	<strong>Информация о заявке</strong></a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#step-3">	<strong>Предварительное решение</strong></a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#step-4">	<strong>Утверждение</strong></a>
+										</li>
+									</ul>
+									<div class="tab-content">
+										<div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+											<div class="row">
+								<div class="col-auto text-center flex-column d-none d-sm-flex">
+									<div class="row h-50">
+										<div class="col border-end">&nbsp;</div>
+										<div class="col">&nbsp;</div>
+									</div>
+									<h5 class="m-2">
+									<span class="badge rounded-pill bg-primary">&nbsp;</span>
+								</h5>
+									<div class="row h-50">
+										<div class="col border-end">&nbsp;</div>
+										<div class="col">&nbsp;</div>
+									</div>
+								</div>
+								<div class="col py-2">
+									<div class="card border-primary shadow radius-15">
+										<div class="card-body">
+											<h4 class="card-title text-primary"></h4>
+											<p class="card-text">Регион: {{ farmer.region }}</p>
+											<p class="card-text">Адрес: {{ farmer.full_address }}</p>
+											<p class="card-text">Рабочий телефон:
+												 {% if data_farmer_contact.phone %}
+													{% for el in data_farmer_contact.phone %}
+														{{ el }};
+													{% endfor %}
+												{% else %}
+													Отсутствует
+												{% endif %}
+											</p>
+											<p class="card-text">Почта:
+												{% if data_farmer_contact.mail %}
+													{% for el in data_farmer_contact.mail %}
+														{{ el }};
+													{% endfor %}
+												{% else %}
+													Отсутствует
+												{% endif %}
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+										<div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+											<div class="card-body">
+						<ul class="nav nav-tabs nav-primary mb-0" role="tablist">
+							<li class="nav-item" role="presentation">
+								<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+									<div class="d-flex align-items-center">
+										<div class="tab-icon"><i class='bx bx-comment-detail font-18 me-1'></i>
+										</div>
+										<div class="tab-title">Информация о заявке</div>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item" role="presentation">
+								<a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false">
+									<div class="d-flex align-items-center">
+										<div class="tab-icon"><i class='bx bx-bookmark-alt font-18 me-1'></i>
+										</div>
+										<div class="tab-title">История переговоров</div>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item" role="presentation">
+								<a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab" aria-selected="false">
+									<div class="d-flex align-items-center">
+										<div class="tab-icon"><i class='bx bx-star font-18 me-1'></i>
+										</div>
+										<div class="tab-title">Передать заявку</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content pt-3">
+							<div class="tab-pane fade show active" id="primaryhome" role="tabpanel">
+						<div class="card">
+							<div class="card-body">
+								<div class="p-4 border rounded">
+									<form method="POST" class="row g-3 needs-validation">
+										{% csrf_token %}
+
+										<div class="col-md-4">
+											<label class="form-label">ИНН</label>
+											<input type="text" class="form-control" name="inn" value="{{ form.inn.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Товар</label>
+											<input type="text" class="form-control" name="product" value="{{ form.product.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Качество товара</label>
+											<input type="text" class="form-control" name="product_quality" value="{{ form.product_quality.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Объем</label>
+											<input type="text" class="form-control" name="volume" value="{{ form.volume.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Цена СХТП</label>
+											<input type="number" step="0.01" class="form-control" name="price_nds" value="{{ form.price_nds.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">НДС</label>
+											<input type="number" class="form-control" name="nds" value="{{ form.nds.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-6">
+											<label class="form-label">Пункт погрузки</label>
+											<input type="text" class="form-control" name="point_loading" value="{{ form.point_loading.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Сроки поставки</label>
+											<input type="date" class="form-control" name="date_delivery" value="{{ form.date_delivery.value|date:'Y-m-d' }}">
+										</div>
+										<div class="col-md-4">
+											<label class="form-label">Условия оплаты</label>
+											<input type="text" class="form-control" name="terms_payment" value="{{ form.terms_payment.value|default_if_none:'' }}">
+										</div>
+										<div class="col-md-4">
+											<label class="form-label">Суточная норма погрузки</label>
+											<input type="text" class="form-control" name="daily_loading_rate" value="{{ form.daily_loading_rate.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Транспорт</label>
+											<input type="number" class="form-control" name="transport" value="{{ form.transport.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Дистанция</label>
+											<input type="number" class="form-control" name="distance" value="{{ form.distance.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-4">
+											<label class="form-label">Цена за тн</label>
+											<input type="number" class="form-control" name="price_per_ton" value="{{ form.price_per_ton.value|default_if_none:'' }}">
+										</div>
+
+										<div class="col-md-3">
+											<label class="form-label">Статус заявки</label>
+											<select class="form-select" name="status">
+												<option value="" {% if not form.status.value %}selected{% endif %}>Выберите статус(Обязательно)</option>
+												{% for value, label in form.fields.status.choices %}
+													<option value="{{ value }}" {% if form.status.value == value %}selected{% endif %}>{{ label }}</option>
+												{% endfor %}
+											</select>
+										</div>
+										<div class="col-12">
+											{% if can_edit %}
+											<button class="btn btn-primary" type="submit">
+												{% if application %}Обновить заявку{% else %}Создать заявку{% endif %}
+											</button>
+											{% else %}
+											<button class="btn btn-secondary" type="submit">
+												Вы не можете обновить заявку
+											</button>
+											{% endif %}
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+							</div>
+							<div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+								<div class="card-body p-5">
+									<div class="card-title d-flex align-items-center"></div>
+										<div class="card">
+											<div class="card-body">
+												<ul class="nav nav-pills nav-pills-warning mb-3" role="tablist">
+													<li class="nav-item" role="presentation">
+														<a class="nav-link active" data-bs-toggle="pill" href="#warning-pills-home" role="tab" aria-selected="true">
+															<div class="d-flex align-items-center">
+																<div class="tab-icon"><i class='bx bxs-contact font-18 me-1'></i>
+																</div>
+																<div class="tab-title">Заметки</div>
+															</div>
+														</a>
+													</li>
+													<li class="nav-item" role="presentation">
+														<a class="nav-link" data-bs-toggle="pill" href="#warning-pills-profile" role="tab" aria-selected="false">
+															<div class="d-flex align-items-center">
+																<div class="tab-icon"><i class='bx bxs-user-pin font-18 me-1'></i>
+																</div>
+																<div class="tab-title">Переговоры</div>
+															</div>
+														</a>
+													</li>
+												</ul>
+												<div class="tab-content">
+													<div class="tab-pane fade show active" id="warning-pills-home" role="tabpanel">
+														<form class="row g-3" method="post">
+															{% csrf_token %}
+															<input type="hidden" name="form_name" value="history_form">
+															<div class="col-12">
+																{{ history_form.dsc }}
+															</div>
+															<div class="col-12">
+																<button type="submit" class="btn btn-primary px-5">Добавить новую запись</button>
+																{% if application %}
+																<a href="{% url 'list_call_note' application.id %}?type=Note" class="btn btn-outline-secondary">История заметок</a>
+																{% endif %}
+															</div>
+														</form>
+													</div>
+													<div class="tab-pane fade" id="warning-pills-profile" role="tabpanel">
+														<form class="row g-3" method="post">
+															{% csrf_token %}
+															<input type="hidden" name="form_name" value="call_form">
+
+															<div class="col-12 mb-3">
+																<label for="date-time" class="form-label">Дата и время переговоров</label>
+																{{ call_form.data_call }}
+															</div>
+
+															<div class="col-12 mb-3">
+																<label for="inputProductDescription" class="form-label">Заметка</label>
+																{{ call_form.dsc }}
+															</div>
+
+															<div class="col-12">
+																<button type="submit" class="btn btn-primary px-5">Назначить созвон</button>
+																{% if application %}
+																<a href="{% url 'list_call_note' application.id %}?type=Call" class="btn btn-outline-primary">История звонков</a>
+																{% endif %}
+															</div>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="primarycontact" role="tabpanel">
+								<div class="mb-3">
+									<label class="form-label">Передать заявку другому менеджеру</label>
+									<form method="post">
+										{% csrf_token %}
+										<input type="hidden" name="form_name" value="change_manager_form">
+										<div class="input-group">
+											{{ change_manager_form.new_manager }}
+											{% if is_owner %}
+												<button class="btn btn-outline-primary" type="submit">
+													<i class='bx bx-transfer'></i> Передать
+												</button>
+											{% else %}
+												<button class="btn btn-outline-secondary" type="button" disabled>
+													Вы не можете изменить менеджера
+												</button>
+											{% endif %}
+										</div>
+									</form>
+								</div>
+								<div class="card">
+								<div class="card-body">
+									<div class="list-group">
+										<a href="javascript:;" class="list-group-item list-group-item-action active" aria-current="true">
+											<div class="d-flex w-100 justify-content-between">
+												<h5 class="mb-1 text-white">{{ application.manage.user.first_name }} {{ application.manage.user.last_name }}</h5>
+												<small>12.03.25</small>
+											</div>
+										</a>
+										{% for el in list_history_manager %}
+										<a href="javascript:;" class="list-group-item list-group-item-action">
+											<div class="d-flex w-100 justify-content-between">
+												<h5 class="mb-1">{{ el.1.first_name }} {{ el.1.last_name }}</h5>
+												<small class="text-muted">{{ el.2 }}</small>
+											</div>
+											<p class="mb-1">Передал: {{ el.0.first_name }} {{ el.0.last_name }}</p>
+										</a>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+							</div>
+
+						</div>
+					</div>
+
+										</div>
+										<div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+											Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+										</div>
+										<div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+											<h3>Step 4 Content</h3>
+											Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>
+		<!--end page wrapper -->
+
+{% endblock %}

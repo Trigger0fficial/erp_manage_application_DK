@@ -1,0 +1,397 @@
+{% extends 'server/pattern/pattern.html' %}
+{% load static %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!-- JS Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% block title %}{{ data.title }}{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+			<div class="page-content">
+				<!--breadcrumb-->
+				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<div class="breadcrumb-title pe-3">Планирование работ</div>
+					<div class="ps-3">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0 p-0">
+								<li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="bx bx-home-alt"></i></a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Распределение плана графика работ</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+				<!--end breadcrumb-->
+				<hr/>
+				<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+					<div class="col">
+						<div class="card radius-10 ">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<p class="mb-0">Всего менеджеров</p>
+										<h5 class="mb-0">{{ manager_count }}</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<p class="mb-0">Всего регионов</p>
+										<h5 class="mb-0">{{ region_count }}</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<p class="mb-0">Распределенные регионы</p>
+										<h5 class="mb-0">{{ distribution_region_count }}</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<p class="mb-0">Обработано заявок</p>
+										<h5 class="mb-0">{{ application_agreed_count }}</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+				<form method="post" id="region-manager-form">
+				  {% csrf_token %}
+				  <div class="row">
+					<div class="col-xl-9 mx-auto">
+					  <h6 class="mb-0 text-uppercase">Управление менеджерами</h6>
+					  <hr />
+					  <div class="card">
+						<div class="card-body">
+						  <div class="border p-3 rounded">
+							<div class="mb-3">
+							  <label class="form-label">Выбор менеджера</label>
+							  {{ form.manager }}
+							</div>
+							<div class="mb-3">
+							  <label class="form-label">Выбор регионов</label>
+								<div class="input-group">
+							  		{{ form.regions }}
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">Сохранить</button>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</form>
+
+				<script>
+				  const managerSelect = document.getElementById('manager-select');
+				  const regionSelect = document.getElementById('region-select');
+				  const takenRegions = {{ taken_regions|safe }};
+				  const managersRegions = {{ managers_regions|safe }};
+				  const allRegions = {{ all_regions|safe }};
+
+				  function updateRegionOptions(managerId) {
+					regionSelect.innerHTML = '';
+
+					allRegions.forEach(region => {
+					  const option = document.createElement('option');
+					  option.value = region.id;
+					  option.text = region.name;
+
+					  const isTaken = takenRegions.includes(region.id);
+					  const isAssignedToThisManager = managersRegions[managerId]?.includes(region.id);
+
+					  if (isTaken && !isAssignedToThisManager) {
+						option.disabled = true;
+					  }
+
+					  if (isAssignedToThisManager) {
+						option.selected = true;
+					  }
+
+					  regionSelect.appendChild(option);
+					});
+
+					regionSelect.removeAttribute('disabled');
+				  }
+
+				  managerSelect.addEventListener('change', (e) => {
+					const managerId = parseInt(e.target.value);
+					if (managerId) {
+					  updateRegionOptions(managerId);
+					} else {
+					  regionSelect.setAttribute('disabled', 'disabled');
+					}
+				  });
+
+				  document.getElementById('region-manager-form').addEventListener('submit', function (e) {
+					const selected = [...regionSelect.selectedOptions].map(opt => opt.value);
+					const hiddenInputs = selected.map(id => {
+					  const input = document.createElement('input');
+					  input.type = 'hidden';
+					  input.name = 'regions[]';
+					  input.value = id;
+					  return input;
+					});
+
+					hiddenInputs.forEach(input => this.appendChild(input));
+				  });
+				</script>
+				<div class="pricing-table">
+				<div class="card-body">
+			<ul class="nav nav-tabs nav-primary mb-0" role="tablist">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+						<div class="d-flex align-items-center">
+							<div class="tab-icon"><i class='bx bx-comment-detail font-18 me-1'></i>
+							</div>
+							<div class="tab-title">Информация</div>
+						</div>
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false">
+						<div class="d-flex align-items-center">
+							<div class="tab-icon"><i class='bx bx-bookmark-alt font-18 me-1'></i>
+							</div>
+							<div class="tab-title">Статистика</div>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content pt-3">
+				<div class="tab-pane fade show active" id="primaryhome" role="tabpanel">
+					<h6 class="mb-0 text-uppercase">Менеджеры и регионы</h6>
+				<hr/>
+					<div class="row row-cols-1 row-cols-lg-2">
+						<!-- Free Tier -->
+						<div class="col">
+							<div class="card mb-5 mb-lg-0">
+								<div class="card-header bg-danger py-3">
+									<h5 class="card-title text-white text-uppercase text-center">Менеджеры</h5>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table id="example2" class="table table-striped table-bordered">
+											<thead>
+												<tr>
+													<th>Менеджер</th>
+													<th>Регионы</th>
+													<th>Кол-во фермеров</th>
+													<th>В работе</th>
+													<th>Завершены</th>
+													<th>Выполнение в %</th>
+												</tr>
+											</thead>
+											<tbody>
+											{% for el in data_manage %}
+												<tr>
+													<td>
+														<a>{{ el.manager.user.first_name }} {{ el.manager.user.last_name }}</a>
+													</td>
+													<td>
+														{{ el.region_count }}
+													</td>
+													<td>
+														{{ el.total_farmers }}
+													</td>
+													<td>
+														{{ el.plan }}
+													</td>
+													<td>
+														{{ el.fact }}
+													</td>
+													<td>
+														{{ el.percent }}
+													</td>
+												</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Plus Tier -->
+						<div class="col">
+							<div class="card mb-5 mb-lg-0">
+								<div class="card-header bg-primary py-3">
+									<h5 class="card-title text-white text-uppercase text-center">Регионы</h5>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+								<table id="example" class="table table-striped table-bordered" style="width:100%">
+									<thead>
+										<tr>
+											<th>Регион</th>
+											<th>Фермеров</th>
+											<th>В работе</th>
+											<th>Обработано</th>
+											<th>Обработано в %</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for el in data_region %}
+											<tr>
+												<td>{{ el.region }}</td>
+												<td>{{ el.farmers }}</td> <!-- Выводим первый контакт телефона -->
+												<td>{{ el.in_work }}</td>  <!-- Выводим первый контакт почты -->
+												<td>{{ el.agreed }}</td>
+												<td>{{ el.percent }}</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				</div>
+				<div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+					<h6 class="mb-0 text-uppercase">Общая статистика</h6>
+				<hr/>
+					<div class="row row-cols-1 row-cols-lg-2">
+						<div class="col">
+							<div class="card">
+								<div class="card-header bg-warning py-1">
+								</div>
+								<div class="card-body">
+									<div class="card-body">
+									<div class="table-responsive">
+										<table id="example4" class="table table-striped table-bordered">
+											<thead>
+												<tr>
+													<th>Менеджер</th>
+													<th>Среднее кол-во заявок на регион</th>
+													<th>Средний чек </th>
+													<th>Среднее время работы</th>
+													<th>Среднее количество передач заявок</th>
+													<th>Частый регион</th>
+													<th>Рейтинг</th>
+												</tr>
+											</thead>
+											<tbody>
+											{% for el in data_static_manager %}
+													<tr>
+														<td>
+															{{ el.manager }}
+														</td>
+														<td>
+															{{ el.avg_applications_per_region }}
+														</td>
+														<td>
+															{{ el.avg_check }}
+														</td>
+														<td>
+															{{ el.avg_working_days }}
+														</td>
+														<td>
+															{{ el.avg_transfers }}
+														</td>
+														<td>
+															{{ el.top_region }}
+														</td>
+														<td>
+															{{ el.rating }}
+														</td>
+													</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+								</div>
+							</div>
+						<div class="col">
+							<div class="card">
+								<div class="card-header bg-warning py-1">
+								</div>
+								<div class="card-body">
+									<div class="card-body">
+									<div class="table-responsive">
+										<table id="example5" class="table table-striped table-bordered">
+											<thead>
+												<tr>
+													<th>Регион</th>
+													<th>Всего заявок</th>
+													<th>Согласованные заявки</th>
+													<th>Средний чек по заявкам</th>
+													<th>Среднее время обработки</th>
+													<th>Кол-во фермеров</th>
+													<th>Назначенный менеджер</th>
+													<th>Процент успешных заявок</th>
+													<th>Рейтинг</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for el in data_static_region %}
+													<tr>
+														<td>
+															{{ el.region }}
+														</td>
+														<td>
+															{{ el.total_app }}
+														</td>
+														<td>
+															{{ el.agree_app }}
+														</td>
+														<td>
+															{{ el.avg_check }}
+														</td>
+														<td>
+															{{ el.avg_time }}
+														</td>
+														<td>
+															{{ el.total_farmer }}
+														</td>
+														<td>
+															{{ el.manager }}
+														</td>
+														<td>
+															{{ el.percent }}
+														</td>
+														<td>
+															{{ el.rating }}
+														</td>
+													</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+
+								</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="primarycontact" role="tabpanel">
+					<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+				</div>
+			</div>
+		</div>
+					</div>
+				</div>
+            </div>
+		</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--favicon-->
+	<link rel="icon" href="{% static 'server/assets/images/favicon-32x32.png' %}" type="image/png" />
+	<!-- loader-->
+	<link href="{% static 'server/assets/css/pace.min.css' %}" rel="stylesheet" />
+	<script src="{% static 'server/assets/js/pace.min.js' %}"></script>
+	<!-- Bootstrap CSS -->
+	<link href="{% static 'server/assets/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'server/assets/css/bootstrap-extended.css' %}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<link href="{% static 'server/assets/css/app.css' %}" rel="stylesheet">
+	<link href="{% static 'server/assets/css/icons.css' %}" rel="stylesheet">
+	<title>ERP Donskoy Kolos - Not find</title>
+</head>
+
+<body>
+	<!-- wrapper -->
+	<div class="wrapper">
+		<nav class="navbar navbar-expand-lg navbar-light bg-white rounded fixed-top rounded-0 shadow-sm">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">
+					<img src="assets/images/logo-img.png" width="140" alt="" />
+				</a>
+			</div>
+		</nav>
+		<div class="error-404 d-flex align-items-center justify-content-center">
+			<div class="container">
+				<div class="card py-5">
+					<div class="row g-0">
+						<div class="col col-xl-5">
+							<div class="card-body p-4">
+								<h1 class="display-1"><span class="text-primary">4</span><span class="text-danger">0</span><span class="text-success">4</span></h1>
+								<h2 class="font-weight-bold display-4">Ошибка. <br> Страницы не существует!</h2>
+								<p>Проверьте URL адрес страницы.</p>
+								<div class="mt-5">
+									{% if user_role == 1 or user_role == 4 %}
+										<a href="{% url 'home' %}" class="btn btn-primary btn-lg px-md-5 radius-30">На главную</a>
+									{% elif user_role == 2 or user_role == 3 %}
+										<a href="{% url 'admin_index' %}" class="btn btn-primary btn-lg px-md-5 radius-30">На главную</a>
+									{% else %}
+										<a href="{% url 'home' %}" class="btn btn-primary btn-lg px-md-5 radius-30">На главную</a>
+									{% endif %}
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end row-->
+				</div>
+			</div>
+		</div>
+		<div class="bg-white p-3 fixed-bottom border-top shadow">
+			<div class="d-flex align-items-center justify-content-between flex-wrap">
+				<p class="mb-0">Донской колос © 2021. Все права защищены</p>
+			</div>
+		</div>
+	<!-- end wrapper -->
+	<!-- Bootstrap JS -->
+	<script src="{% static 'server/assets/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

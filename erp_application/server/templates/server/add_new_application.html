@@ -1,0 +1,172 @@
+{% extends 'server/pattern/pattern.html' %}
+{% load static %}
+
+{% block title %}{{ data.title }}{% endblock %}
+{% block content %}
+		<!--start page wrapper -->
+		<div class="page-wrapper">
+			<div class="page-content">
+              <div class="card">
+				  <div class="card-body p-4">
+					  <h5 class="card-title">Новая заявка</h5>
+					  <hr/>
+                       <div class="form-body mt-4">
+		<form method="post" novalidate>
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="border border-3 p-4 rounded">
+        <div class="mb-3">
+          <label for="id_farmer" class="form-label">Общая информация о фермере</label>
+          {{ form.farmer }}
+          {% if form.farmer.errors %}
+            <div class="text-danger small">{{ form.farmer.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.address }}
+          {% if form.address.errors %}
+            <div class="text-danger small">{{ form.address.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.full_address }}
+          {% if form.full_address.errors %}
+            <div class="text-danger small">{{ form.full_address.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.phone }}
+          {% if form.phone.errors %}
+            <div class="text-danger small">{{ form.phone.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.email }}
+          {% if form.email.errors %}
+            <div class="text-danger small">{{ form.email.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.inn }}
+          {% if form.inn.errors %}
+            <div class="text-danger small">{{ form.inn.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="id_note" class="form-label">Дополнительная информация</label>
+          {{ form.note }}
+          {% if form.note.errors %}
+            <div class="text-danger small">{{ form.note.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="border border-3 p-4 rounded">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="id_product" class="form-label">Товар</label>
+            {{ form.product }}
+            {% if form.product.errors %}
+              <div class="text-danger small">{{ form.product.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_product_quality" class="form-label">Качество</label>
+            {{ form.product_quality }}
+            {% if form.product_quality.errors %}
+              <div class="text-danger small">{{ form.product_quality.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_price_nds" class="form-label">Цена СХТП</label>
+            {{ form.price_nds }}
+            {% if form.price_nds.errors %}
+              <div class="text-danger small">{{ form.price_nds.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_volume" class="form-label">Объем</label>
+            {{ form.volume }}
+            {% if form.volume.errors %}
+              <div class="text-danger small">{{ form.volume.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_price_per_ton" class="form-label">Цена за тн</label>
+            {{ form.price_per_ton }}
+            {% if form.price_per_ton.errors %}
+              <div class="text-danger small">{{ form.price_per_ton.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_transport" class="form-label">Транспорт</label>
+            {{ form.transport }}
+            {% if form.transport.errors %}
+              <div class="text-danger small">{{ form.transport.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_distance" class="form-label">Дистанция</label>
+            {{ form.distance }}
+            {% if form.distance.errors %}
+              <div class="text-danger small">{{ form.distance.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <label for="id_nds" class="form-label">НДС</label>
+            {{ form.nds }}
+            {% if form.nds.errors %}
+              <div class="text-danger small">{{ form.nds.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="id_point_loading" class="form-label">Адрес погрузки</label>
+            {{ form.point_loading }}
+            {% if form.point_loading.errors %}
+              <div class="text-danger small">{{ form.point_loading.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="id_date_delivery" class="form-label">Сроки поставки</label>
+            {{ form.date_delivery }}
+            {% if form.date_delivery.errors %}
+              <div class="text-danger small">{{ form.date_delivery.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="id_daily_loading_rate" class="form-label">Суточная норма погрузки</label>
+            {{ form.daily_loading_rate }}
+            {% if form.daily_loading_rate.errors %}
+              <div class="text-danger small">{{ form.daily_loading_rate.errors|striptags }}</div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="id_terms_payment" class="form-label">Условия оплаты</label>
+            {{ form.terms_payment }}
+            {% if form.terms_payment.errors %}
+              <div class="text-danger small">{{ form.terms_payment.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-12">
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+					</div>
+				  </div>
+			  </div>
+
+			</div>
+		</div>
+		<!--end page wrapper -->
+{% endblock %}

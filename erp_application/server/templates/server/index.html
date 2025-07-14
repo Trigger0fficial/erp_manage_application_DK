@@ -42,7 +42,7 @@
 					<div class="card-body text-center">
 					   <p class="mb-1 text-white">Мой план</p>
 					   <h3 class="mb-3 text-white">{{ data_statistic.plan.0 }} / {{ data_statistic.plan.1 }}</h3>
-					   <p class="font-13 text-white"><span class="text-success"><i class="lni lni-arrow-up"></i> {{ data_statistic.plan.3 }}%</span> Успешных заявок из {{ data_statistic.plan.1 }}: {{ data_statistic.plan.2 }}</p>
+					   <p class="font-13 text-white"><span class="text-success"><i class="lni lni-arrow-up"></i> {{ data_statistic.plan.3 }}%</span> Выполненных заявок</p>
 					   <div class="progress radius-10 mt-4" style="height:4.5px;">
 							<div class="progress-bar bg-danger" role="progressbar" style="width: {{ data_statistic.plan.3 }}%"></div>
 						</div>
@@ -240,7 +240,7 @@
 												</td>
 												<td>
 													{% if app.status %}
-														{{ app.get_status_display }}
+														{{ app.status }}
 													{% else %}
 														Отсутствует
 													{% endif %}

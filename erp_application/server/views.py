@@ -164,7 +164,7 @@ def show_index(req):
             'price': f'{app.price_nds}/{price_with_nds}' if price_with_nds else 'Отсутствует',
             'date_delivery': app.date_delivery or 'Отсутствует',
             'manager_name': f'{app.manage.user.first_name or "Отсутствует"} {app.manage.user.last_name or "Отсутствует"}',
-            'status': app.status or 'Отсутствует'
+            'status': app.get_status_display or 'Отсутствует'
         })
 
     # ====================== СТАТИСТИКА ======================
